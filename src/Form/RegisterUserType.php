@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -10,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegisterUserType extends AbstractType
 {
@@ -24,6 +27,16 @@ class RegisterUserType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'your Password',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'max' => 4096,
+                    ]),
+                ],
                 'attr' => [
                     'placeholder' => 'Enter your password',
                 ],
@@ -55,6 +68,12 @@ class RegisterUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'constraints' => [
+                new UniqueEntity([
+                    'fields' => 'email',
+                    'message' => 'This email is already used',
+                ]),
+            ],
             'data_class' => User::class,
         ]);
     }
