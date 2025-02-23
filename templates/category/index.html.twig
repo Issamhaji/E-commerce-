@@ -11,7 +11,7 @@
                 {% for product in category.products %}
                     <img src="/uploads/{{ product.image }}" alt="{{ product.name }}" class="img-fluid">
                     <strong>{{ product.name }}</strong>
-                    <span class="d-block">Price: {{ product.priceWTva }}$</span>
+                    <span class="d-block">Price: {{ product.priceWTva|price }}</span>
                 {% endfor %}
             </div>
         </div>

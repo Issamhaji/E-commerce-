@@ -33,6 +33,7 @@ class ProductCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $required = $pageName === 'edit' ? false : true;
         return [
             TextField::new('name')->setLabel('Product Name')->setHelp('This is the name of the product'),
             SlugField::new('slug')->setLabel('Slug')->setTargetFieldName('name')->setHelp('This is the Url of the product'),
@@ -41,7 +42,8 @@ class ProductCrudController extends AbstractCrudController
                 ->setLabel('Image')
                 ->setUploadDir('public/uploads')->setBasePath('uploads')
                 ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
-                ->setHelp('This is the image of the product'),
+                ->setHelp('This is the image of the product')
+                ->setRequired($required),
             NumberField::new('price')->setLabel('Price')->setHelp('price of the product - no tax included'),
             ChoiceField::new('tva')->setLabel('TVA')->setChoices([
                 '2.1%' => '2.1',
