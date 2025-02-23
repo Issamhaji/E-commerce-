@@ -27,6 +27,8 @@ final class RegisterController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->userRepository->save($user);
 
+            $this->addFlash('success', 'Your are registed!');
+
             return $this->redirectToRoute('app_home');
         }
 
