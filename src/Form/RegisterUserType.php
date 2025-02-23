@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,8 +26,8 @@ class RegisterUserType extends AbstractType
                     'placeholder' => 'Enter your email',
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'your Password',
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -40,7 +41,7 @@ class RegisterUserType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Enter your password',
                 ],
-                'first_options' => ['label' => 'Password'],
+                'first_options' => ['label' => 'Your Password', 'hash_property_path' => 'password'],
                 'second_options' => ['label' => 'Confirm your Password'],
                 'mapped' => false,
             ])
